@@ -74,7 +74,9 @@ public class JwtTokenExtractor {
         OpenIdMetadataKey key = this.openIdMetadata.getKey(decodedJWT.getKeyId());
 
         if (key != null) {
-            Verification verification = JWT.require(Algorithm.RSA256(key.key, null));
+            Verification verification = JWT
+                .require(Algorithm.RSA256(key.key, null))
+                .acceptLeeway(tokenValidationParameters.clockSkew.getSeconds());
             try {
                 verification.build().verify(token);
 
